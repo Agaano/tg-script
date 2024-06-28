@@ -3,9 +3,7 @@ import { StringSession } from "telegram/sessions";
 import readline from "readline";
 
 import fs from 'fs';
-import { rejects } from "assert";
-import { stringify, parse } from 'flatted';
-import { NewMessage, NewMessageEvent } from "telegram/events";
+import { NewMessage } from "telegram/events";
 
 function readJSON(path: string): Promise<objType> {
     const rStream = fs.createReadStream(path);
@@ -129,16 +127,22 @@ async function start() {
     }
 
     const newMessageEvent = new NewMessage({fromUsers: [channel.inputEntity]}); 
+    const messageConfig = await readJSON('./src/message.json');
+    const minDelay = messageConfig['min-delay']
+    const maxDelay = messageConfig['max-delay']
+    const minPostsCount = messageConfig['min-posts-count']
+    const maxPostsCount = messageConfig['max-posts-count']
     let counter = 0;
-    let limit = random(3,6);
+    let limit = random(minPostsCount,maxPostsCount);
     console.log(`Сообщение будет опубликовано через ${limit - counter} поста(-ов)`)
+    
     client.addEventHandler(async () => {
         counter++;
         
         if (limit <= counter) {
             counter = 0;
-            limit = random(3,6);
-            const timeout = random(1000,3000);
+            limit = random(minPostsCount,maxPostsCount);
+            const timeout = random(minDelay,maxDelay);
             console.log(`Сообщение будет отправлено через ${timeout / 1000}s`)
             console.log(`Следующее сообщение будет опубликовано через ${limit - counter} поста(-ов)`)
             setTimeout(async () => {

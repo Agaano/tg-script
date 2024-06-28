@@ -1,9 +1,9 @@
 {
     "channel-name": "test channel",
-    "min-delay": 1200,
-    "max-delay": 2400,
-    "min-posts-count": 3,
-    "max-posts-count": 6,
+    "min-delay": 10000,
+    "max-delay": 15000,
+    "min-posts-count": 5,
+    "max-posts-count": 10,
     "raw-content": "Пользователь $user$ успешно $action$ квартиру",
     "actions": ["арендовал", "сдал"],
     "users": ["agaano", "ferrion", "qwerty", "gasdte", "lickes the ashes"]
